@@ -1,3 +1,6 @@
+import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 public class Main {
     public static void main(String[] args) {
         int numRolls = 4;
@@ -22,6 +25,25 @@ public class Main {
         for(int i = 0 ; i < lowestAvgArr.length ; i++){
             System.out.println(lowestAvgArr[i]);
         }
+
+        System.out.println("\n\nLAB02\n\n");
+        analyze(weeklyMonthTemperatures);
+        System.out.println("\n\n");
+
+        List<String> votes = new ArrayList<>();
+        votes.add("Bush");
+        votes.add("Bush");
+        votes.add("Bush");
+        votes.add("Shrub");
+        votes.add("Hedge");
+        votes.add("Shrub");
+        votes.add("Bush");
+        votes.add("Hedge");
+        votes.add("Bush");
+
+        tally(votes);
+        String winner = tally(votes);
+        System.out.println(winner + " received the most votes!");
     }
 
 
@@ -99,6 +121,93 @@ public class Main {
         }
         lowestAvgArr=arr[index1];
         return lowestAvgArr;
+    }
+
+    public static String analyze(int[][] arr){
+        int min = arr[0][0];
+        int max = arr[0][0];
+        for(int i = 0 ; i<arr.length ; i++){
+            for(int j = 0 ; j< arr[i].length ; j++){
+                if(min>=arr[i][j]){
+                    min=arr[i][j];
+                }
+                else if (max<=arr[i][j]){
+                    max=arr[i][j];
+                }
+            }
+        }
+//        System.out.println("min = " + min + " max = " + max);
+
+        HashSet<Integer>set = new HashSet<Integer>();
+        for(int i = 0 ; i<arr.length ; i++){
+            for(int j = 0 ; j< arr[i].length ; j++){
+                    set.add(arr[i][j]);
+            }
+        }
+//        System.out.println(set);
+
+        String str = "High : " + max + "\n" + "Low : " + min ;
+        for(int i = min ; i < max ; i++){
+            if(set.contains(i)){
+            }
+            else{
+                str = str.concat("\n"+"Never saw temperature: " + i);
+            }
+        }
+        System.out.println(str);
+        return str;
+    }
+
+    public static String tally(List<String> votes){
+//        System.out.println(votes);
+        HashSet<String>set = new HashSet<String>();
+        for(int i = 0 ; i < votes.size() ;i++){
+            set.add(votes.get(i));
+        }
+//        System.out.println(set);
+        Object voters[] = new Object[set.size()];
+        int counters[] = new int[set.size()];
+        for(int i = 0 ; i< counters.length ;i++){
+            counters[i]=0;
+        }
+//        for(int i = 0 ; i< counters.length ;i++){
+//            System.out.println(counters[i]);
+//        }
+        voters = set.toArray();
+//        for(int i =0 ; i< voters.length ;i++){
+//            System.out.println(voters[i]);
+//        }
+
+//        System.out.println(votes.size());
+//        for(int i = 0 ; i< counters.length ;i++){
+//            System.out.println(counters[i]);
+//        }
+
+        for(int i = 0 ; i < votes.size() ; i++){
+            for(int j = 0 ; j < voters.length ; j++){
+                if(votes.get(i)==voters[j]){
+                    counters[j]++;
+                }
+            }
+        }
+//        for(int i = 0 ; i< counters.length ;i++){
+//            System.out.println(counters[i]);
+//        }
+
+        int index = 0;
+        int highestVote = 0;
+
+        for(int i = 0 ; i< counters.length ;i++){
+            if(highestVote<counters[i]){
+                index=i;
+                highestVote=counters[i];
+            }
+
+        }
+
+        String winner = voters[index].toString();
+//        System.out.println(winner);
+        return winner;
     }
 
 }
